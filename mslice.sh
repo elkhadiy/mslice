@@ -31,7 +31,7 @@ function getlaststamp {
 }
 
 function slice {
-    ffmpeg -t "$3" -i "$1" -ss "$2" -acodec copy "$4" &>/dev/null
+    ffmpeg -t "$3" -i "$1" -ss "$2" -acodec copy "$4" &> /dev/null
 }
 
 function mslice {
@@ -58,20 +58,30 @@ function mslice {
 			    $Blue"${timestamps[@]}"$Color_Off
     dbg ok "Last timestamp :" $Blue$last$Color_Off
 
-    for i in $(seq 0 $(( $len - 2))); do
-	from="${timestamps[$i]}"
-	to="${timestamps[$(( $i+1 ))]}"
-	newfile="$filename.slice$i.$extention"
-	dbg ok Creating slice from $Blue$from$Color_Off \
-	    to $Blue$to$Color_Off \
-	    in $Blue$newfile$Color_Off
-	slice "$filepath" "$from" "$to" "$newfile"
-	#touch "$newfile"
-    done
+    from="00:00"
+    to="${timestamps[0]}"
+    newfile="$filename.slice0.$extention"
+    dbg ok Creating slice from $Blue"$from"$Color_Off \
+	to $Blue"$to"$Color_Off \
+	in $Blue"$newfile"$Color_Off
+    slice "$filepath" "$from" "$to" "$newfile"
+
+    if [ $len -gt 1 ]; then
+	for i in $(seq 1 $(( $len - 2 ))); do
+	    from="${timestamps[$i]}"
+	    to="${timestamps[$(( $i+1 ))]}"
+	    newfile="$filename.slice$i.$extention"
+	    dbg ok Creating slice from $Blue$from$Color_Off \
+		to $Blue$to$Color_Off \
+		in $Blue$newfile$Color_Off
+	    slice "$filepath" "$from" "$to" "$newfile"
+	    #touch "$newfile"
+	done
+    fi
 
     from="${timestamps[$(($len-1))]}"
     to="$last"
-    newfile="$filename.slice$(($len-1)).$extention"
+    newfile="$filename.slice$(($len)).$extention"
     dbg ok Creating slice from $Blue"$from"$Color_Off \
 	to $Blue"$to"$Color_Off \
 	in $Blue"$newfile"$Color_Off
