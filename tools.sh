@@ -25,6 +25,7 @@ function dbg {
 }
 
 function cout {
-    caller=$0
+    caller=$(basename "$0")
+    caller="${caller%.*}"
     echo -e $Yellow"["$caller"]"$Color_Off "$@"
 }
