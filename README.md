@@ -15,7 +15,7 @@ youtube-dl vid_link && ffmpeg -i vid_name <params> audio_name && ./mslice audio_
 ```
 
 ## TODO
-* Sanity check
+* Sanity check (working dir, file existing...)
 * slice renaming
 * bulk entry (copypaste from yt description)
 * simple gui with zenity?
