@@ -31,7 +31,7 @@ function getlaststamp {
 }
 
 function slice {
-    ffmpeg -t "$3" -i "$1" -ss "$2" -acodec copy "$4" &> /dev/null
+    ffmpeg -i "$1" -ss "$2" -to "$3" -acodec copy "$4" &> /dev/null
 }
 
 function mslice {
