@@ -67,10 +67,10 @@ function mslice {
     slice "$filepath" "$from" "$to" "$newfile"
 
     if [ $len -gt 1 ]; then
-	for i in $(seq 1 $(( $len - 2 ))); do
+	for i in $(seq 0 $(( $len - 2 ))); do
 	    from="${timestamps[$i]}"
 	    to="${timestamps[$(( $i+1 ))]}"
-	    newfile="$filename.slice$i.$extention"
+	    newfile="$filename.slice$(($i+1)).$extention"
 	    dbg ok Creating slice from $Blue$from$Color_Off \
 		to $Blue$to$Color_Off \
 		in $Blue$newfile$Color_Off
