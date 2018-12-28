@@ -12,13 +12,14 @@ The first slice `0:00 2:43` and last `11:28 14:12` for example are made
 automagically.
 
 ### Example usage
-```
-youtube-dl vid_link && ffmpeg -i vid_name <params> audio_name && ./mslice audio_name <list_of_timestamps>
+Given a youtube video id (the `?v=...` variable in the address bar) fetch and slice it using the timestamps in the video description
+```bash
+~$ video=youtube_video_id filename="$(youtube-dl -x $video --get-filename)" youtube-dl -x $video --audio-format opus && ./mslice.sh "${filename%.*}".opus $(for i in $(echo $(youtube-dl --get-description $video) | grep -Po '\d+:\d+'); do echo $i; done)
 ```
 
 ## TODO
 * Sanity check (working dir, file existing...)
 * slice renaming
-* bulk entry (copypaste from yt description)
+* ~~bulk entry (copypaste from yt description)~~
 * simple gui with zenity?
 * ?

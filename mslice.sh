@@ -47,7 +47,7 @@ function mslice {
     done
     len=${#timestamps[@]}
     last=$(getlaststamp "$filepath")
-    
+
     dbg ok "I assume all arguments are sane..."
     dbg ok "No need to supply the mp3 duration as last timestamp,"\
 	    "I use ffprobe for that ;)"
@@ -58,19 +58,11 @@ function mslice {
 			    $Blue"${timestamps[@]}"$Color_Off
     dbg ok "Last timestamp :" $Blue$last$Color_Off
 
-    from="00:00"
-    to="${timestamps[0]}"
-    newfile="$filename.slice0.$extention"
-    dbg ok Creating slice from $Blue"$from"$Color_Off \
-	to $Blue"$to"$Color_Off \
-	in $Blue"$newfile"$Color_Off
-    slice "$filepath" "$from" "$to" "$newfile"
-
     if [ $len -gt 1 ]; then
 	for i in $(seq 0 $(( $len - 2 ))); do
 	    from="${timestamps[$i]}"
 	    to="${timestamps[$(( $i+1 ))]}"
-	    newfile="$filename.slice$(($i+1)).$extention"
+	    newfile="$filename-$from.$extention"
 	    dbg ok Creating slice from $Blue$from$Color_Off \
 		to $Blue$to$Color_Off \
 		in $Blue$newfile$Color_Off
@@ -81,7 +73,7 @@ function mslice {
 
     from="${timestamps[$(($len-1))]}"
     to="$last"
-    newfile="$filename.slice$(($len)).$extention"
+    newfile="$filename-$from.$extention"
     dbg ok Creating slice from $Blue"$from"$Color_Off \
 	to $Blue"$to"$Color_Off \
 	in $Blue"$newfile"$Color_Off
